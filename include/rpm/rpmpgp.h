@@ -1082,9 +1082,9 @@ unsigned int pgpDigParamsAlgo(pgpDigParams digp, unsigned int algotype);
 /** \ingroup rpmpgp
  * Returns the issuer or the object's Key ID.
  *
- * If the object is a signature, then this returns the Key ID stored
- * in the first Issuer subpacket as a hex string.  (This is not
- * authenticated.)
+ * If the object is a signature, then this returns the Key ID stored in the
+ * first Issuer or Issuer Fingerprint subpacket as a hex string.
+ * (This is not authenticated.)
  *
  * If the object is a certificate or a subkey, then this returns the key's
  * Key ID.
@@ -1139,10 +1139,34 @@ int pgpDigParamsVersion(pgpDigParams digp);
 /** \ingroup rpmpgp
  * Retrieve the object's creation time.
  *
+ * If the object is a signature, then this returns the signature's creation
+ * time.
+ *
+ * If the object is a certificate, then this returns the primary key's key
+ * creation time.
+ *
+ * If the object is a subkey, then this returns the subkey's key creation
+ * time.
+ *
  * param digp		parameter container
  * return		seconds since the UNIX Epoch.
  */
 uint32_t pgpDigParamsCreationTime(pgpDigParams digp);
+
+/** \ingroup rpmpgp
+ * Retrieve the signature's hash prefix.
+ *
+ * Returns the signature's hash prefix as a big endian 16-bit number.
+ *
+ * The hash prefix is the first (most significant) two bytes of the
+ * signature's hash.  This function returns those two bytes.
+ *
+ * If the object is not a signature, then this returns 0.
+ *
+ * param digp		parameter container
+ * return		the 16-bit hash prefix in big-endian format
+ */
+uint16_t pgpDigParamsHashPrefix(pgpDigParams digp);
 
 /** \ingroup rpmpgp
  * Destroy parsed OpenPGP packet parameter(s).
