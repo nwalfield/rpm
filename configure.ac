@@ -282,77 +282,78 @@ AC_ARG_WITH(crypto,
 
 WITH_OPENSSL_INCLUDE=
 WITH_OPENSSL_LIB=
-if test "$with_crypto" = openssl; then
-# If we have pkgconfig make sure CPPFLAGS are setup correctly for the OpenSSL
-# -I include path.
-AC_PATH_TOOL([PKGCONFIG], [pkg-config], [no], [$PATH:/usr/bin:/usr/local/bin])
-if test "x$PKGCONFIG" != "xno"; then
-  CPPFLAGS="$CPPFLAGS $($PKGCONFIG --cflags libcrypto)"
-  WITH_OPENSSL_LIB=$($PKGCONFIG --libs libcrypto)
-else
-  WITH_OPENSSL_LIB=-lcrypto
-fi
-
-AC_CHECK_HEADERS([openssl/evp.h], [], [
-  AC_MSG_ERROR([missing required OpenSSL header])
-])
-AC_CHECK_HEADERS([openssl/rsa.h], [], [
-  AC_MSG_ERROR([missing required OpenSSL header])
-])
-AC_CHECK_HEADERS([openssl/dsa.h], [], [
-  AC_MSG_ERROR([missing required OpenSSL header])
-])
-
-AC_CHECK_LIB(crypto, EVP_DigestInit_ex, [], [
-  AC_MSG_ERROR([required OpenSSL library 'libcrypto' missing or too old])
-])
-
-AC_CHECK_LIB(crypto, EVP_MD_CTX_new, [
-    AC_DEFINE(HAVE_EVP_MD_CTX_NEW, 1, [Define to 1 if OpenSSL has EVP_MD_CTX_new])
-    AC_SUBST(HAVE_EVP_MD_CTX_NEW, [1])
-  ], [
-  AC_CHECK_LIB(crypto, EVP_MD_CTX_create, [], [
-      AC_MSG_ERROR([required OpenSSL library 'libcrypto' missing or too old])
-  ])
-])
-
-AC_CHECK_LIB(crypto, EVP_PKEY_CTX_new, [], [
-  AC_MSG_ERROR([required OpenSSL library 'libcrypto' missing or too old])
-])
-
-AC_CHECK_LIB(crypto, DSA_set0_key, [
-    AC_DEFINE(HAVE_DSA_SET0_KEY, 1, [Define to 1 if OpenSSL has DSA_set0_key])
-    AC_SUBST(HAVE_DSA_SET0_KEY, [1])
-    ], []
-)
-
-AC_CHECK_LIB(crypto, DSA_set0_pqg, [
-    AC_DEFINE(HAVE_DSA_SET0_PQG, 1, [Define to 1 if OpenSSL has DSA_set0_pqg])
-    AC_SUBST(HAVE_DSA_SET0_PQG, [1])
-    ], []
-)
-
-AC_CHECK_LIB(crypto, DSA_SIG_set0, [
-    AC_DEFINE(HAVE_DSA_SIG_SET0, 1, [Define to 1 if OpenSSL has DSA_SIG_set0])
-    AC_SUBST(HAVE_DSA_SIG_SET0, [1])
-    ], []
-)
-
-AC_CHECK_LIB(crypto, RSA_set0_key, [
-    AC_DEFINE(HAVE_RSA_SET0_KEY, 1, [Define to 1 if OpenSSL has RSA_set0_key])
-    AC_SUBST(HAVE_RSA_SET0_KEY, [1])
-    ], []
-)
-
-AC_CHECK_LIB(crypto, BN_bn2binpad, [
-    AC_DEFINE(HAVE_BN2BINPAD, 1, [Define to 1 if OpenSSL has BN_bn2binpad])
-    AC_SUBST(HAVE_BN2BINPAD, [1])
-    ], []
-)
-
-fi
-
-AM_CONDITIONAL([WITH_OPENSSL],[test "$with_crypto" = openssl])
+#if test "$with_crypto" = openssl; then
+## If we have pkgconfig make sure CPPFLAGS are setup correctly for the OpenSSL
+## -I include path.
+#AC_PATH_TOOL([PKGCONFIG], [pkg-config], [no], [$PATH:/usr/bin:/usr/local/bin])
+#if test "x$PKGCONFIG" != "xno"; then
+#  CPPFLAGS="$CPPFLAGS $($PKGCONFIG --cflags libcrypto)"
+#  WITH_OPENSSL_LIB=$($PKGCONFIG --libs libcrypto)
+#else
+#  WITH_OPENSSL_LIB=-lcrypto
+#fi
+#
+#AC_CHECK_HEADERS([openssl/evp.h], [], [
+#  AC_MSG_ERROR([missing required OpenSSL header])
+#])
+#AC_CHECK_HEADERS([openssl/rsa.h], [], [
+#  AC_MSG_ERROR([missing required OpenSSL header])
+#])
+#AC_CHECK_HEADERS([openssl/dsa.h], [], [
+#  AC_MSG_ERROR([missing required OpenSSL header])
+#])
+#
+#AC_CHECK_LIB(crypto, EVP_DigestInit_ex, [], [
+#  AC_MSG_ERROR([required OpenSSL library 'libcrypto' missing or too old])
+#])
+#
+#AC_CHECK_LIB(crypto, EVP_MD_CTX_new, [
+#    AC_DEFINE(HAVE_EVP_MD_CTX_NEW, 1, [Define to 1 if OpenSSL has EVP_MD_CTX_new])
+#    AC_SUBST(HAVE_EVP_MD_CTX_NEW, [1])
+#  ], [
+#  AC_CHECK_LIB(crypto, EVP_MD_CTX_create, [], [
+#      AC_MSG_ERROR([required OpenSSL library 'libcrypto' missing or too old])
+#  ])
+#])
+#
+#AC_CHECK_LIB(crypto, EVP_PKEY_CTX_new, [], [
+#  AC_MSG_ERROR([required OpenSSL library 'libcrypto' missing or too old])
+#])
+#
+#AC_CHECK_LIB(crypto, DSA_set0_key, [
+#    AC_DEFINE(HAVE_DSA_SET0_KEY, 1, [Define to 1 if OpenSSL has DSA_set0_key])
+#    AC_SUBST(HAVE_DSA_SET0_KEY, [1])
+#    ], []
+#)
+#
+#AC_CHECK_LIB(crypto, DSA_set0_pqg, [
+#    AC_DEFINE(HAVE_DSA_SET0_PQG, 1, [Define to 1 if OpenSSL has DSA_set0_pqg])
+#    AC_SUBST(HAVE_DSA_SET0_PQG, [1])
+#    ], []
+#)
+#
+#AC_CHECK_LIB(crypto, DSA_SIG_set0, [
+#    AC_DEFINE(HAVE_DSA_SIG_SET0, 1, [Define to 1 if OpenSSL has DSA_SIG_set0])
+#    AC_SUBST(HAVE_DSA_SIG_SET0, [1])
+#    ], []
+#)
+#
+#AC_CHECK_LIB(crypto, RSA_set0_key, [
+#    AC_DEFINE(HAVE_RSA_SET0_KEY, 1, [Define to 1 if OpenSSL has RSA_set0_key])
+#    AC_SUBST(HAVE_RSA_SET0_KEY, [1])
+#    ], []
+#)
+#
+#AC_CHECK_LIB(crypto, BN_bn2binpad, [
+#    AC_DEFINE(HAVE_BN2BINPAD, 1, [Define to 1 if OpenSSL has BN_bn2binpad])
+#    AC_SUBST(HAVE_BN2BINPAD, [1])
+#    ], []
+#)
+#
+#fi
+#
+#AM_CONDITIONAL([WITH_OPENSSL],[test "$with_crypto" = openssl])
+AM_CONDITIONAL([WITH_OPENSSL],[test "0" = "1"])
 AC_SUBST(WITH_OPENSSL_INCLUDE)
 AC_SUBST(WITH_OPENSSL_LIB)
 
@@ -360,27 +361,44 @@ AC_SUBST(WITH_OPENSSL_LIB)
 # Check for libgcrypt library.
 WITH_LIBGCRYPT_INCLUDE=
 WITH_LIBGCRYPT_LIB=
-if test "$with_crypto" = libgcrypt ; then
-  # libgcrypt 1.8.5 onwards ships a pkg-config file so prefer that
-  PKG_CHECK_MODULES([LIBGCRYPT], [libgcrypt], [have_libgcrypt=yes], [have_libgcrypt=no])
-  if test "$have_libgcrypt" = "yes"; then
-    WITH_LIBGCRYPT_INCLUDE="$LIBGCRYPT_CFLAGS"
-    WITH_LIBGCRYPT_LIB="$LIBGCRYPT_LIBS"
-  else
-    AC_PATH_TOOL(LIBGCRYPT_CONFIG, libgcrypt-config, notfound)
-      if test notfound != "$LIBGCRYPT_CONFIG" ; then
-        WITH_LIBGCRYPT_INCLUDE=`$LIBGCRYPT_CONFIG --cflags`
-        WITH_LIBGCRYPT_LIB=`$LIBGCRYPT_CONFIG --libs`
-     fi
-     if test -z "$WITH_LIBGCRYPT_LIB" ; then
-       AC_MSG_ERROR([libgcrypt not found])
-    fi
-  fi
-fi
-
-AM_CONDITIONAL([WITH_LIBGCRYPT],[test "$with_crypto" = libgcrypt])
+#if test "$with_crypto" = libgcrypt ; then
+#  # libgcrypt 1.8.5 onwards ships a pkg-config file so prefer that
+#  PKG_CHECK_MODULES([LIBGCRYPT], [libgcrypt], [have_libgcrypt=yes], [have_libgcrypt=no])
+#  if test "$have_libgcrypt" = "yes"; then
+#    WITH_LIBGCRYPT_INCLUDE="$LIBGCRYPT_CFLAGS"
+#    WITH_LIBGCRYPT_LIB="$LIBGCRYPT_LIBS"
+#  else
+#    AC_PATH_TOOL(LIBGCRYPT_CONFIG, libgcrypt-config, notfound)
+#      if test notfound != "$LIBGCRYPT_CONFIG" ; then
+#        WITH_LIBGCRYPT_INCLUDE=`$LIBGCRYPT_CONFIG --cflags`
+#        WITH_LIBGCRYPT_LIB=`$LIBGCRYPT_CONFIG --libs`
+#     fi
+#     if test -z "$WITH_LIBGCRYPT_LIB" ; then
+#       AC_MSG_ERROR([libgcrypt not found])
+#    fi
+#  fi
+#fi
+#
+#AM_CONDITIONAL([WITH_LIBGCRYPT],[test "$with_crypto" = libgcrypt])
+AM_CONDITIONAL([WITH_LIBGCRYPT],[test "0" = "1"])
 AC_SUBST(WITH_LIBGCRYPT_INCLUDE)
 AC_SUBST(WITH_LIBGCRYPT_LIB)
+
+#=================
+# Check for the rpm-sequoia backend.
+WITH_RPM_SEQUOIA_INCLUDE=
+WITH_RPM_SEQUOIA_LIB=
+PKG_CHECK_MODULES([RPM_SEQUOIA], [rpm-sequoia], [have_rpm_sequoia=yes], [have_rpm_sequoia=no])
+if test "$have_rpm_sequoia" = "yes"; then
+   WITH_RPM_SEQUOIA_INCLUDE="$RPM_SEQUOIA_CFLAGS"
+   WITH_RPM_SEQUOIA_LIB="$RPM_SEQUOIA_LIBS"
+else
+   AC_MSG_ERROR([librpm-sequoia not found])
+fi
+
+AM_CONDITIONAL([WITH_RPM_SEQUOIA],[test "$with_rpm_sequoia" = librpm-sequoia])
+AC_SUBST(WITH_RPM_SEQUOIA_INCLUDE)
+AC_SUBST(WITH_RPM_SEQUOIA_LIB)
 
 #=================
 # Check for magic library.

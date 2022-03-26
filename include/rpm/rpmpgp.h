@@ -33,7 +33,13 @@ typedef struct pgpDig_s * pgpDig;
  */
 typedef struct pgpDigParams_s * pgpDigParams;
 
-typedef uint8_t pgpKeyID_t[8];
+
+/** \ingroup rpmpgp
+ * The length (in bytes) of a binary (not hex encoded) key ID.
+ */
+#define PGP_KEYID_LEN 8
+
+typedef uint8_t pgpKeyID_t[PGP_KEYID_LEN];
 typedef uint8_t pgpTime_t[4];
 
 /** \ingroup rpmpgp
@@ -1112,6 +1118,95 @@ int pgpDigParamsCmp(pgpDigParams p1, pgpDigParams p2);
  * return		algorithm value, 0 on error
  */
 unsigned int pgpDigParamsAlgo(pgpDigParams digp, unsigned int algotype);
+
+/** \ingroup rpmpgp
+ * Returns the issuer or the object's Key ID.
+ *
+ * If the object is a signature, then this returns the Key ID stored in the
+ * first Issuer or Issuer Fingerprint subpacket as a hex string.
+ * (This is not authenticated.)
+ *
+ * If the object is a certificate or a subkey, then this returns the key's
+ * Key ID.
+ *
+ * The caller must not free the returned buffer.
+ *
+ * param digp		parameter container
+ * return		an array of PGP_KEYID_LEN bytes.  If the issuer is
+ * 			unknown, this returns an array with all zeros.
+ */
+const uint8_t *pgpDigParamsSignID(pgpDigParams digp);
+
+/** \ingroup rpmpgp
+ * Retrieve the primary User ID, if any.
+ *
+ * Returns the primary User ID, if any.
+ *
+ * If the object is a signature, then this returns NULL.
+ *
+ * If the object is a certificate or a subkey, then this returns the
+ * certificate's primary User ID, if any.
+ *
+ * This interface does not provide a way for the caller to recognize
+ * any embedded NUL characters.
+ *
+ * The caller must not free the returned buffer.
+ *
+ * param digp		parameter container
+ * return		a string or NULL, if there is no primary User ID.
+ */
+const char *pgpDigParamsUserID(pgpDigParams digp);
+
+/** \ingroup rpmpgp
+ * Retrieve the object's version.
+ *
+ * Returns the object's version.
+ *
+ * If the object is a signature, then this returns the version of the
+ * signature packet.
+ *
+ * If the object is a certificate, then this returns the version of the
+ * primary key packet.
+ *
+ * If the object is a subkey, then this returns the version of the subkey's
+ * key packet.
+ *
+ * param digp		parameter container
+ * return		the object's version
+ */
+int pgpDigParamsVersion(pgpDigParams digp);
+
+/** \ingroup rpmpgp
+ * Retrieve the object's creation time.
+ *
+ * If the object is a signature, then this returns the signature's creation
+ * time.
+ *
+ * If the object is a certificate, then this returns the primary key's key
+ * creation time.
+ *
+ * If the object is a subkey, then this returns the subkey's key creation
+ * time.
+ *
+ * param digp		parameter container
+ * return		seconds since the UNIX Epoch.
+ */
+uint32_t pgpDigParamsTime(pgpDigParams digp);
+
+/** \ingroup rpmpgp
+ * Retrieve the signature's hash prefix.
+ *
+ * Returns the signature's hash prefix as a big endian 16-bit number.
+ *
+ * The hash prefix is the first (most significant) two bytes of the
+ * signature's hash.  This function returns those two bytes.
+ *
+ * If the object is not a signature, then this returns 0.
+ *
+ * param digp		parameter container
+ * return		the 16-bit hash prefix in big-endian format
+ */
+uint16_t pgpDigParamsHashPrefix(pgpDigParams digp);
 
 /** \ingroup rpmpgp
  * Destroy parsed OpenPGP packet parameter(s).
