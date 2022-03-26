@@ -221,7 +221,7 @@ pgpDig rpmPubkeyDig(rpmPubkey key)
 {
     pgpDig dig = NULL;
     static unsigned char zeros[] = 
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	{ 0, 0, 0, 0, 0, 0, 0, 0, };
     int rc;
     if (key == NULL)
 	return NULL;
