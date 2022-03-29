@@ -559,6 +559,7 @@ rpmRC rpmtsImportPubkey(const rpmts ts, const unsigned char * pkt, size_t pktlen
 {
     Header h = NULL;
     rpmRC rc = RPMRC_FAIL;		/* assume failure */
+    char *lints = NULL;
     rpmPubkey pubkey = NULL;
     rpmPubkey *subkeys = NULL;
     int subkeysCount = 0;
@@ -569,6 +570,15 @@ rpmRC rpmtsImportPubkey(const rpmts ts, const unsigned char * pkt, size_t pktlen
 
     if (txn == NULL)
 	return rc;
+
+    rc = pgpPubkeyLint(pkt, pktlen, &lints);
+    if (lints) {
+	fprintf(stderr, "%s\n", lints);
+        free(lints);
+    }
+    if (rc) {
+        goto exit;
+    }
 
     /* XXX keyring wont load if sigcheck disabled, force it temporarily */
     rpmtsSetVSFlags(ts, (oflags & ~RPMVSF_MASK_NOSIGNATURES));
