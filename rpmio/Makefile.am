@@ -24,13 +24,13 @@ librpmio_la_SOURCES = \
 	rpmio_internal.h rpmhook.h rpmvercmp.c rpmver.c \
 	rpmstring.c rpmfileutil.c rpmglob.c \
 	rpmkeyring.c rpmstrpool.c rpmmacro_internal.h \
-	rpmlua.c rpmlua.h lposix.c lposix.h rpmpgp_internal.c
+	rpmlua.c rpmlua.h lposix.c lposix.h
 
 if WITH_OPENSSL
-librpmio_la_SOURCES += digest_openssl.c
+librpmio_la_SOURCES += digest_openssl.c digest_openssl.h rpmpgp_internal.c
 else
 if WITH_LIBGCRYPT
-librpmio_la_SOURCES += digest_libgcrypt.c
+librpmio_la_SOURCES += digest_libgcrypt.c digest_libgcrypt.h rpmpgp_internal.c
 endif
 endif
 

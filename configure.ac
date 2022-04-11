@@ -353,6 +353,10 @@ AC_CHECK_LIB(crypto, BN_bn2binpad, [
 fi
 
 AM_CONDITIONAL([WITH_OPENSSL],[test "$with_crypto" = openssl])
+if test "x$with_crypto" = xopenssl
+then
+    AC_DEFINE(HAVE_OPENSSL, [1], [Define to 1 if using openssl])
+fi
 AC_SUBST(WITH_OPENSSL_INCLUDE)
 AC_SUBST(WITH_OPENSSL_LIB)
 
@@ -379,6 +383,10 @@ if test "$with_crypto" = libgcrypt ; then
 fi
 
 AM_CONDITIONAL([WITH_LIBGCRYPT],[test "$with_crypto" = libgcrypt])
+if test "x$with_crypto" = xlibgcrypt
+then
+    AC_DEFINE(HAVE_LIBGCRYPT, [1], [Define to 1 if using libgcrypt])
+fi
 AC_SUBST(WITH_LIBGCRYPT_INCLUDE)
 AC_SUBST(WITH_LIBGCRYPT_LIB)
 
